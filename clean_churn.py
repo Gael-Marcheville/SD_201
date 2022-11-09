@@ -41,5 +41,12 @@ dfc_churn['tenure'] = [int(s) for s in dfc_churn['tenure']] #passage en int car 
 
 #%% select test_data
 
-display(dfc_churn)
 dfc_churn.to_csv(r"./result.csv")
+
+#%% function for import
+
+def get_raw_df_churn():
+    return dfchurn
+
+def get_dfc_churn():
+    return dfc_churn
