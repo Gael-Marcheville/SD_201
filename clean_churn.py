@@ -13,6 +13,7 @@ dfc_churn = dfc_churn.dropna() #Non-assigned values are handled
 ## create id_department
 dfc_department = pd.DataFrame({'department' : df_churn['department']})
 dfc_department.drop_duplicates(keep = 'first', inplace=True)
+dfc_department = dfc_department.reset_index(drop=True)
 dfc_department['id_department'] = dfc_department.index
 ## create cat_salary
 dfc_salary = pd.DataFrame({'salary' : df_churn['salary']})
@@ -37,16 +38,36 @@ dfc_churn = dfc_churn.drop(["left"],axis = 1)
 ## format
 dfc_churn['tenure'] = [int(s) for s in dfc_churn['tenure']] #passage en int car valeurs entières => optimisation pour les calculs  
 
-#%% select training_data
+#%% select training_data and test_data
+
+dfc_churn_train = dfc_churn.copy()
+ids_test_list = [int(line.strip()) for line in open('ids_test.txt', 'r')]
+
+for i in ids_test_list:
+    dfc_churn_train = dfc_churn_train.drop(i)
 
 #%% select test_data
 
+dfc_churn_test = dfc_churn.copy()
+ids_test_list = [int(line.strip()) for line in open('ids_test.txt', 'r')]
+ids_training_list = [j for j in [i for i in range(len(dfc_churn))] if j not in ids_test_list]
+
+for i in ids_training_list:
+    dfc_churn_test = dfc_churn_test.drop(i)
+
+#%% export in csv
 dfc_churn.to_csv(r"./result.csv")
 
 #%% function for import
 
+def get_dfc_churn_train():
+    return dfc_churn_train
+
+def get_dfc_churn_test():
+    return dfc_churn_test
+
 def get_raw_df_churn():
-    return dfchurn
+    return df_churn
 
 def get_dfc_churn():
     return dfc_churn

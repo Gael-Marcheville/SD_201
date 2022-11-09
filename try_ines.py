@@ -45,16 +45,15 @@ y_kmeans = kmeans_default.fit_predict(dfc_churnn)
 #     erreur=erreur+1
 #     g=g+1
 
-    
-testlist=[]    
-mylist=[i for i in range(len(dfc_churn ))]    
-random.shuffle(mylist)
-shuffle_list=mylist[:int(0.1*len(mylist))]
+#%% new test sample
+# mylist=[i for i in range(len(dfc_churn))]    
+# random.shuffle(mylist)
+# shuffle_list = mylist[:int(0.1*len(mylist))]
 
-for i in range(len(mylist)):
-    if i not in shuffle_list:
-        df_test=df_test.drop(i)
-        
+# with open('ids_test.txt', 'w') as temp_file:
+#     for item in shuffle_list:
+#         temp_file.write("%s\n" % item)
+
     
     
 
