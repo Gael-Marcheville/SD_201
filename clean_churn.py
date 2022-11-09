@@ -21,7 +21,7 @@ dfc_salary['cat_salary'] = [2 if s == 'high' else 1 if s == 'medium' else 0 for 
 ## create is_left
 dfc_left = pd.DataFrame({'left' : df_churn['left']})
 dfc_left.drop_duplicates(keep = 'first', inplace=True)
-dfc_left['is_left'] = [1 if s == 'yes' else 0 for s in dfc_left['left']]
+dfc_left['has_left'] = [1 if s == 'yes' else 0 for s in dfc_left['left']]
 
 ## merge values
 #id_department
