@@ -1,4 +1,4 @@
-,is_left,cat_salary,id_department,promoted,review,projects,tenure,satisfaction,bonus,avg_hrs_month
+,has_left,cat_salary,id_department,promoted,review,projects,tenure,satisfaction,bonus,avg_hrs_month
 0,0,0,0,0,0.5775686596355698,3,5,0.6267589740293295,0,180.8660696668475
 1,0,0,0,0,0.5835229700353167,3,5,0.6638017656086639,0,179.32513637058852
 2,0,0,0,0,0.434516303729722,4,6,0.8383910152623749,0,183.02899811782524
