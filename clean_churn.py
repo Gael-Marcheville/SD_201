@@ -35,7 +35,7 @@ dfc_churn = pd.merge(dfc_left, dfc_churn, how='inner', on=['left'])
 dfc_churn = dfc_churn.drop(["left"],axis = 1)
 
 ## format
-dfc_churn['tenure'] = [int(s) for s in dfc_churn['tenure']]  
+dfc_churn['tenure'] = [int(s) for s in dfc_churn['tenure']] #passage en int car valeurs entières => optimisation pour les calculs  
 
 #%% select training_data
 
