@@ -65,4 +65,4 @@ print('Error when predict "has not left" ', round(np.sum(errors), 2),)
 
 export_graphviz(clf, out_file = 'tree.dot', feature_names = feature_list, rounded = True, precision = 1)# Use dot file to create a graph
 (graph, ) = pydot.graph_from_dot_file('tree.dot')# Write graph to a png file
-graph.write_png('decision_tree.png')
+graph.write_png('./result/example_decision_tree.png')

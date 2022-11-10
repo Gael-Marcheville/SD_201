@@ -38,7 +38,7 @@ dfc_churn = dfc_churn.drop(["left"],axis = 1)
 ## format
 dfc_churn['tenure'] = [int(s) for s in dfc_churn['tenure']] #passage en int car valeurs entières => optimisation pour les calculs  
 
-#%% select training_data and test_data
+#%% select training_data
 
 dfc_churn_train = dfc_churn.copy()
 ids_test_list = [int(line.strip()) for line in open('ids_test.txt', 'r')]
@@ -56,7 +56,7 @@ for i in ids_training_list:
     dfc_churn_test = dfc_churn_test.drop(i)
 
 #%% export in csv
-dfc_churn.to_csv(r"./result.csv")
+#dfc_churn.to_csv(r"./result/dfc_churn.csv")
 
 #%% function for import
 
