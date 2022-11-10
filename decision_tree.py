@@ -50,7 +50,7 @@ predictions = clf.predict(test_features)
 # Calculate the absolute errors
 errors = abs(predictions - test_labels)
 # Print out the mean absolute error (mae)
-print('Pourcentage d erreur :', round(np.mean(errors), 2), '%')
+print('Pourcentage d erreur :', round(np.mean(errors)*100, 2), '%')
 
 
 errors = [max(predictions[i] - test_labels[i],0) for i in range (len(predictions))]
@@ -63,6 +63,6 @@ print('Error when predict "has not left" ', round(np.sum(errors), 2),)
 
 #%% Print trees
 
-export_graphviz(clf, out_file = 'tree.dot', feature_names = feature_list, rounded = True, precision = 1)# Use dot file to create a graph
-(graph, ) = pydot.graph_from_dot_file('tree.dot')# Write graph to a png file
-graph.write_png('./result/example_decision_tree.png')
+# export_graphviz(clf, out_file = 'tree.dot', feature_names = feature_list, rounded = True, precision = 1)# Use dot file to create a graph
+# (graph, ) = pydot.graph_from_dot_file('tree.dot')# Write graph to a png file
+# graph.write_png('./result/example_decision_tree.png')
