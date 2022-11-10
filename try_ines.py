@@ -1,10 +1,12 @@
 import clean_churn
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+import random
 
 
 dfc_churn = clean_churn.get_dfc_churn()
-dfc_churnn=dfc_churn.drop(["is_left"],axis = 1)
+dfc_churnn=dfc_churn.drop(["has_left"],axis = 1)
+df_test=clean_churn.get_dfc_churn()
 
 
 # set random seed for reproducibility
@@ -43,29 +45,15 @@ y_kmeans = kmeans_default.fit_predict(dfc_churnn)
 #     erreur=erreur+1
 #     g=g+1
 
+#%% new test sample
+# mylist=[i for i in range(len(dfc_churn))]    
+# random.shuffle(mylist)
+# shuffle_list = mylist[:int(0.1*len(mylist))]
 
-wcss=[]
-#this loop will fit the k-means algorithm to our data and 
-#second we will compute the within cluster sum of squares and #appended to our wcss list.
-for i in range(1,11): 
-     kmeans = KMeans(n_clusters=i, init ='k-means++', max_iter=300,  n_init=10,random_state=0 )
-     
-#i above is between 1-10 numbers. init parameter is the random #initialization method  
-#we select kmeans++ method. max_iter parameter the maximum number of iterations there can be to 
-#find the final clusters when the K-meands algorithm is running. we #enter the default value of 300
-#the next parameter is n_init which is the number of times the #K_means algorithm will be run with
-#different initial centroid.
-kmeans.fit(dfc_churnn)
-#kmeans algorithm fits to the X dataset
-wcss.append(kmeans.inertia_)
-#kmeans inertia_ attribute is:  Sum of squared distances of samples #to their closest cluster center.
-#4.Plot the elbow graph
-plt.plot(range(1,11),wcss)
-plt.title('The Elbow Method Graph')
-plt.xlabel('Number of clusters')
-plt.ylabel('WCSS')
-plt.show()    
-    
+# with open('ids_test.txt', 'w') as temp_file:
+#     for item in shuffle_list:
+#         temp_file.write("%s\n" % item)
+
     
     
 
