@@ -44,7 +44,7 @@ rf.fit(train_features, train_labels);
 #%% Make prediction
 
 # Use the forest's predict method on the test data
-predictions = rf.predict(test_features) 
+predictions = rf.predict(test_features)
 
 #%% Evaluating model
 
