@@ -1,8 +1,10 @@
 #%% import
+import pandas as pd 
 import clean_churn
 import numpy as np
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import export_graphviz
+from sklearn.model_selection import GridSearchCV
 import pydot
 
 #%% setup data
@@ -37,9 +39,24 @@ test_features = np.array(test_features)
 #%% Learning
 
 # Instantiate model with 1000 decision trees
-rf = RandomForestRegressor(n_estimators = 100, random_state = 42)
+rf = RandomForestClassifier(n_estimators = 25, min_samples_split = 10, max_depth = 25, min_samples_leaf = 6, bootstrap = True, random_state = 42)
 # Train the model on training data
 rf.fit(train_features, train_labels);
+
+#%% improve model
+
+# param_grid = { 
+#     'max_features': ['auto', 'sqrt', 'log2']
+#     'bootstrap': [True, False],
+#     'max_depth': [20, 25, 30, 35, None],
+#     'min_samples_leaf': [4, 6, 8 ],
+#     'min_samples_split': [ 10, 15, 20],
+#     'n_estimators': [20,25,30,35]
+#  }
+
+#rf_CV = GridSearchCV(estimator=rf, param_grid=param_grid, cv= 5)
+#rf_CV.fit(train_features, train_labels)
+#print(rf_CV.best_params_)
 
 #%% Make prediction
 
@@ -51,7 +68,7 @@ predictions = rf.predict(test_features)
 # Calculate the absolute errors
 errors = abs(predictions - test_labels)
 # Print out the mean absolute error (mae)
-print('Pourcentage d erreur :', round(np.mean(errors), 2), '%')
+print('Pourcentage d erreur :', round(np.mean(errors)*100, 2), '%')
 
 errors = [max(predictions[i] - test_labels[i],0) for i in range (len(predictions))]
 # Print out the mean absolute error (mae)
@@ -61,9 +78,11 @@ errors = [max(- predictions[i] + test_labels[i],0) for i in range (len(predictio
 # Print out the mean absolute error (mae)
 print('Error when predict "has not left" ', round(np.sum(errors), 2),)
 
+display(pd.DataFrame(rf.feature_importances_, index = feature_list, columns = ["importance"]).sort_values("importance", ascending = False))
+
 #%% Print trees
 
-tree = rf.estimators_[0]# Export the image to a dot file
-export_graphviz(tree, out_file = 'tree.dot', feature_names = feature_list, rounded = True, precision = 1)# Use dot file to create a graph
-(graph, ) = pydot.graph_from_dot_file('tree.dot')# Write graph to a png file
-graph.write_png('example_of_random_forest_tree.png')
+# tree = rf.estimators_[3]# Export the image to a dot file
+# export_graphviz(tree, out_file = 'tree.dot', feature_names = feature_list, rounded = True, precision = 1)# Use dot file to create a graph
+# (graph, ) = pydot.graph_from_dot_file('tree.dot')# Write graph to a png file
+# graph.write_png('./result/example_of_random_forest_tree.png')

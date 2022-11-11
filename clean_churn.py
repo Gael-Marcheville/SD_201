@@ -9,6 +9,21 @@ df_churn = pd.read_csv("./dataset/employee_churn_data.csv") #raw data, 10 000 ro
 dfc_churn = df_churn.copy() #deep_copy of dataset
 dfc_churn = dfc_churn.dropna() #Non-assigned values are handled
 
+## format
+dfc_churn['tenure'] = [int(s) for s in dfc_churn['tenure']] #passage en int car valeurs entières => optimisation pour les calculs  
+
+## delete outliers values
+dfc_churn = dfc_churn.drop(dfc_churn[(dfc_churn.promoted != 0) & (dfc_churn.promoted != 1)].index)
+dfc_churn = dfc_churn.drop(dfc_churn[(dfc_churn.review < 0) | (dfc_churn.review > 1)].index)
+dfc_churn = dfc_churn.drop(dfc_churn[(dfc_churn.projects < 0) | (dfc_churn.projects > 100)].index)
+dfc_churn = dfc_churn.drop(dfc_churn[(dfc_churn.salary != 'high') & (dfc_churn.salary != 'low') & (dfc_churn.salary != 'medium')].index)
+dfc_churn = dfc_churn.drop(dfc_churn[(dfc_churn.tenure < 0) | (dfc_churn.tenure > 100)].index)
+dfc_churn = dfc_churn.drop(dfc_churn[(dfc_churn.satisfaction < 0) | (dfc_churn.satisfaction > 1)].index)
+dfc_churn = dfc_churn.drop(dfc_churn[(dfc_churn.bonus != 0) & (dfc_churn.bonus != 1)].index)
+dfc_churn = dfc_churn.drop(dfc_churn[(dfc_churn.avg_hrs_month < 0) | (dfc_churn.avg_hrs_month > 744)].index)
+dfc_churn = dfc_churn.drop(dfc_churn[(dfc_churn.left != 'yes') & (dfc_churn.left != 'no')].index)
+dfc_churn = dfc_churn.reset_index(drop=True)
+
 ## create values
 ## create id_department
 dfc_department = pd.DataFrame({'department' : df_churn['department']})
@@ -35,10 +50,7 @@ dfc_churn = dfc_churn.drop(["salary"],axis = 1)
 dfc_churn = pd.merge(dfc_left, dfc_churn, how='inner', on=['left'])
 dfc_churn = dfc_churn.drop(["left"],axis = 1)
 
-## format
-dfc_churn['tenure'] = [int(s) for s in dfc_churn['tenure']] #passage en int car valeurs entières => optimisation pour les calculs  
-
-#%% select training_data and test_data
+#%% select training_data
 
 dfc_churn_train = dfc_churn.copy()
 ids_test_list = [int(line.strip()) for line in open('ids_test.txt', 'r')]
@@ -56,7 +68,7 @@ for i in ids_training_list:
     dfc_churn_test = dfc_churn_test.drop(i)
 
 #%% export in csv
-dfc_churn.to_csv(r"./result.csv")
+#dfc_churn.to_csv(r"./result/dfc_churn.csv")
 
 #%% function for import
 
