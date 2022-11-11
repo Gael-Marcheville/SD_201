@@ -31,7 +31,8 @@ infos_clusters = [(prop_mean[i], nb[i]) for i in range(n_cluster)]
 print(infos_clusters)
 
 #%%
-# Ca marche pas de prendre tout. On regarde par département :
+
+### SELECTION OF DEPARTMENTS ###
 dfc_department = pd.DataFrame({'department' : dfc_churn['id_department']})
 dfc_department.drop_duplicates(keep = 'first', inplace=True)
 departments = list(dfc_department.department)
@@ -51,7 +52,7 @@ for id_department in departments:
     
     df_mean = kmeans.fit_predict(dfc_filtered)
     kmeans_dic[str(id_department)] = df_mean
-    
+    ### ANALYSIS OF PROPORTIONS ###
     index = 0
     prop_left = left.count(1) / len(left)
     print(prop_left)
@@ -96,15 +97,20 @@ plt.show()
     
 #%%
 
+N = 11
+
 wcss=[]
-for i in range(1,40):
+for i in range(1,N):
     print(i)
     kmeans = KMeans(n_clusters=i, init ='k-means++', max_iter=300,  n_init=10,random_state=0 )
     kmeans.fit(df)
     wcss.append(kmeans.inertia_)
      
-plt.plot(list(range(1,40)),wcss)
-plt.title('The Elbow Method Graph')
+x_optim = 4
+plt.plot(list(range(1,N)),wcss)
+plt.axvline(x=x_optim, ymin=0, ymax=0.2,color='red',linestyle='--')
+
+plt.title('The Coude Method Graph')
 plt.xlabel('Number of clusters')
 plt.ylabel('WCSS')
 plt.show()
