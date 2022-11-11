@@ -5,7 +5,10 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import export_graphviz
 from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import confusion_matrix
+import seaborn
 import pydot
+import matplotlib.pyplot as plt
 
 #%% setup data
 
@@ -39,11 +42,11 @@ test_features = np.array(test_features)
 #%% Learning
 
 # Instantiate model with 1000 decision trees
-rf = RandomForestClassifier(n_estimators = 25, min_samples_split = 10, max_depth = 25, min_samples_leaf = 6, bootstrap = True, random_state = 42)
+rf = RandomForestClassifier(n_estimators = 1, min_samples_split = 10, max_depth = 25, min_samples_leaf = 6, bootstrap = True, random_state = 42)
 # Train the model on training data
 rf.fit(train_features, train_labels);
 
-#%% improve model
+#%% gridSearchCV 
 
 # param_grid = { 
 #     'max_features': ['auto', 'sqrt', 'log2']
@@ -68,7 +71,7 @@ predictions = rf.predict(test_features)
 # Calculate the absolute errors
 errors = abs(predictions - test_labels)
 # Print out the mean absolute error (mae)
-print('Pourcentage d erreur :', round(np.mean(errors)*100, 2), '%')
+print('Error :', round(np.mean(errors)*100, 2), '%')
 
 errors = [max(predictions[i] - test_labels[i],0) for i in range (len(predictions))]
 # Print out the mean absolute error (mae)
@@ -79,6 +82,25 @@ errors = [max(- predictions[i] + test_labels[i],0) for i in range (len(predictio
 print('Error when predict "has not left" ', round(np.sum(errors), 2),)
 
 display(pd.DataFrame(rf.feature_importances_, index = feature_list, columns = ["importance"]).sort_values("importance", ascending = False))
+
+#%% confusion matrix
+
+# Get and reshape confusion matrix data
+
+# Visualise classical Confusion M0atrix
+CM = confusion_matrix(test_labels,predictions)
+
+# Visualize it as a heatmap
+class_names = ['not left','left']
+
+seaborn.heatmap(CM, annot=True, fmt=".0f", cmap="flare", annot_kws={"size":15})
+tick_marks = np.arange(len(class_names)) + 0.5
+plt.xticks(tick_marks, class_names, fontsize = 15)
+plt.yticks(tick_marks, class_names, rotation=90, fontsize = 15)
+plt.title('Confusion Matrix for Random Forest', fontsize = 15)
+plt.xlabel('Predicted label', fontsize = 15)
+plt.ylabel('True label', fontsize = 15, rotation = 90)
+plt.show()
 
 #%% Print trees
 

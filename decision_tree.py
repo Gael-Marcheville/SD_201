@@ -3,6 +3,9 @@ import clean_churn
 import numpy as np
 import pydot
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
+from sklearn.metrics import confusion_matrix
+import seaborn
+import matplotlib.pyplot as plt
 
 #%% setup data
 
@@ -50,7 +53,7 @@ predictions = clf.predict(test_features)
 # Calculate the absolute errors
 errors = abs(predictions - test_labels)
 # Print out the mean absolute error (mae)
-print('Pourcentage d erreur :', round(np.mean(errors)*100, 2), '%')
+print('Error :', round(np.mean(errors)*100, 2), '%')
 
 
 errors = [max(predictions[i] - test_labels[i],0) for i in range (len(predictions))]
@@ -60,6 +63,26 @@ print('Error when predict "has left" ', round(np.sum(errors), 2),)
 errors = [max(- predictions[i] + test_labels[i],0) for i in range (len(predictions))]
 # Print out the mean absolute error (mae)
 print('Error when predict "has not left" ', round(np.sum(errors), 2),)
+
+
+#%% confusion matrix
+
+# Get and reshape confusion matrix data
+
+# Visualise classical Confusion M0atrix
+CM = confusion_matrix(test_labels,predictions)
+
+# Visualize it as a heatmap
+class_names = ['not left','left']
+
+seaborn.heatmap(CM, annot=True, fmt=".0f", cmap="flare", annot_kws={"size":15})
+tick_marks = np.arange(len(class_names)) + 0.5
+plt.xticks(tick_marks, class_names, fontsize = 15)
+plt.yticks(tick_marks, class_names, rotation=90, fontsize = 15)
+plt.title('Confusion Matrix for Decision Tree model', fontsize = 15)
+plt.xlabel('Predicted label', fontsize = 15)
+plt.ylabel('True label', fontsize = 15, rotation = 90)
+plt.show()
 
 #%% Print trees
 
