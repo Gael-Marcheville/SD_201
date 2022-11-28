@@ -1,7 +1,8 @@
 import clean_churn
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
-
+import pandas as pd
+import numpy as np
 
 n_cluster = 8
 
@@ -75,21 +76,24 @@ for id_department in departments:
 index = 0
 plt.figure(figsize =(20,15))
 
+largeur = 0.3
+
+
 for id_department in departments:
     clusters = np.array(range(n_cluster))
-    
+        
     left_proportion = [l[0] for l in infos_departments[index]]
     population_proportion = [l[1] for l in infos_departments[index]]
-    
+        
     ax = plt.subplot(3, 3, index +1)
     r1 = ax.bar(clusters - largeur/2, left_proportion, largeur)
     r2 = ax.bar(clusters + largeur/2, population_proportion, largeur)
     ax.set_xticks(clusters)
     ax.set_xticklabels(clusters)
-    
+        
     plt.title(f"department id : {id_department}")
     plt.legend(["Proportion of left people", "Population (normalized)"])
-
+    
     index += 1
 
 plt.show()
