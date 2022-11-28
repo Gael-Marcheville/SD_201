@@ -114,7 +114,7 @@ x_optim = 4
 plt.plot(list(range(1,N)),wcss)
 plt.axvline(x=x_optim, ymin=0, ymax=0.2,color='red',linestyle='--')
 
-plt.title('The Coude Method Graph')
+plt.title('The Elbow Method Graph')
 plt.xlabel('Number of clusters')
 plt.ylabel('WCSS')
 plt.show()
